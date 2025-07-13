@@ -1,6 +1,7 @@
 // app/homeApp.js
 import React, { useState } from 'react';
-import { View, Text, Image, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
+// ALTERAÇÃO: Importado Platform e StatusBar para calcular a margem do topo dinamicamente
+import { View, Text, Image, ActivityIndicator, StyleSheet, TouchableOpacity, Platform, StatusBar } from 'react-native';
 import Header from '../src/components/header';
 import useFetchPosts from '../src/hooks/useFetchPosts';
 
@@ -25,7 +26,7 @@ export default function HomeApp() {
     return (
       <View style={styles.container}>
         <Header />
-        <Text style={{color: 'red', fontSize: 18, margin: 38}}>{error}</Text>
+        <Text style={{color: 'red', fontSize: 18, margin: 38}}>{error.message || 'Ocorreu um erro'}</Text>
       </View>
     );
   }
@@ -42,6 +43,7 @@ export default function HomeApp() {
   const post = posts[current];
 
   return (
+    // ALTERAÇÃO: Trocado SafeAreaView por View para usar o padding manual
     <View style={styles.container}>
       <Header />
       <View style={styles.content}>
@@ -49,7 +51,7 @@ export default function HomeApp() {
         <View style={styles.carouselContainer}>
           {/* Seta esquerda */}
           <TouchableOpacity
-            style={[styles.arrowButton, {left: -18}]}
+            style={[styles.arrowButton, {left: 16}]}
             onPress={handlePrev}
             accessibilityLabel="Anterior"
           >
@@ -75,7 +77,7 @@ export default function HomeApp() {
           
           {/* Seta direita */}
           <TouchableOpacity
-            style={[styles.arrowButton, {right: -18}]}
+            style={[styles.arrowButton, {right: 16}]}
             onPress={handleNext}
             accessibilityLabel="Próxima"
           >
@@ -99,11 +101,15 @@ export default function HomeApp() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f2f2f2', alignItems: 'center' },
+  // ALTERAÇÃO: Adicionado paddingTop dinâmico para afastar o conteúdo da barra de status
+  container: { 
+    flex: 1, 
+    backgroundColor: '#f2f2f2',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
+  },
   content: { flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' },
   carouselContainer: {
     width: '100%',
-    maxWidth: 440,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -168,12 +174,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '45%',
     zIndex: 2,
-    backgroundColor: 'rgba(80,80,80,0.16)',
+    backgroundColor: 'rgba(255,255,255,0.8)',
     width: 38,
     height: 38,
     borderRadius: 19,
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 6,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   arrowText: { fontSize: 36, color: '#444', fontWeight: 'bold' },
   dotsContainer: {
