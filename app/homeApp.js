@@ -69,7 +69,6 @@ export default function HomeApp() {
             <Text style={styles.arrowText}>{'‹'}</Text>
           </TouchableOpacity>
 
-          {/* Corrigido: usar post._id */}
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => handlePostPress(post._id)}

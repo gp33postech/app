@@ -1,13 +1,12 @@
 // src/styles/homeStyles.js
 import { StyleSheet } from 'react-native';
-import colors from './colors'; // Supondo que você tenha um arquivo de cores
+import colors from './colors'; 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-    // ALTERAÇÃO: Removidos paddingTop e paddingBottom excessivos. 
-    // O SafeAreaView no componente irá gerenciar o espaçamento do topo.
+    
   },
   content: {
     flex: 1,
