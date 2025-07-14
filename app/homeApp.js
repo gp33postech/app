@@ -1,17 +1,21 @@
 // app/homeApp.js
 import React, { useState } from 'react';
-// ALTERAÇÃO: Importado Platform e StatusBar para calcular a margem do topo dinamicamente
 import { View, Text, Image, ActivityIndicator, StyleSheet, TouchableOpacity, Platform, StatusBar } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Header from '../src/components/header';
 import useFetchPosts from '../src/hooks/useFetchPosts';
 
 export default function HomeApp() {
   const { posts, loading, error } = useFetchPosts();
   const [current, setCurrent] = useState(0);
+  const navigation = useNavigation();
 
-  // Navegação do carrossel
   const handlePrev = () => setCurrent(prev => prev === 0 ? posts.length - 1 : prev - 1);
   const handleNext = () => setCurrent(prev => prev === posts.length - 1 ? 0 : prev + 1);
+
+  const handlePostPress = (postId) => {
+    navigation.navigate('DetalhesApp', { id: postId });
+  };
 
   if (loading) {
     return (
@@ -42,42 +46,54 @@ export default function HomeApp() {
 
   const post = posts[current];
 
+  // Verificar se o _id está disponível
+  if (!post || !post._id) {
+    return (
+      <View style={styles.container}>
+        <Header />
+        <Text style={{fontSize: 18, margin: 48, color: 'red'}}>Erro: Post inválido ou ID ausente.</Text>
+      </View>
+    );
+  }
+
   return (
-    // ALTERAÇÃO: Trocado SafeAreaView por View para usar o padding manual
     <View style={styles.container}>
       <Header />
       <View style={styles.content}>
-        {/* Carrossel com setas */}
         <View style={styles.carouselContainer}>
-          {/* Seta esquerda */}
           <TouchableOpacity
-            style={[styles.arrowButton, {left: 16}]}
+            style={[styles.arrowButton, { left: 16 }]}
             onPress={handlePrev}
             accessibilityLabel="Anterior"
           >
             <Text style={styles.arrowText}>{'‹'}</Text>
           </TouchableOpacity>
-          
-          {/* Card da postagem */}
-          <View style={styles.card}>
-            <Image
-              source={post.image ? { uri: post.image } : require('../assets/post_placeholder.jpg')}
-              style={styles.postImage}
-              resizeMode="cover"
-            />
-            <Text style={styles.title}>{post.title}</Text>
-            <Text style={styles.description}>{post.description}</Text>
-            <View style={styles.meta}>
-              <Text style={styles.author}>Autor: {post.author}</Text>
-              <Text style={styles.date}>
-                {post.updatedAt ? new Date(post.updatedAt).toLocaleDateString('pt-BR') : '--/--/----'}
-              </Text>
-            </View>
-          </View>
-          
-          {/* Seta direita */}
+
+          {/* Corrigido: usar post._id */}
           <TouchableOpacity
-            style={[styles.arrowButton, {right: 16}]}
+            activeOpacity={0.8}
+            onPress={() => handlePostPress(post._id)}
+            style={styles.cardWrapper}
+          >
+            <View style={styles.card}>
+              <Image
+                source={post.image ? { uri: post.image } : require('../assets/post_placeholder.jpg')}
+                style={styles.postImage}
+                resizeMode="cover"
+              />
+              <Text style={styles.title}>{post.title}</Text>
+              <Text style={styles.description}>{post.description}</Text>
+              <View style={styles.meta}>
+                <Text style={styles.author}>Autor: {post.author}</Text>
+                <Text style={styles.date}>
+                  {post.updatedAt ? new Date(post.updatedAt).toLocaleDateString('pt-BR') : '--/--/----'}
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.arrowButton, { right: 16 }]}
             onPress={handleNext}
             accessibilityLabel="Próxima"
           >
@@ -85,7 +101,6 @@ export default function HomeApp() {
           </TouchableOpacity>
         </View>
 
-        {/* Indicadores de página */}
         <View style={styles.dotsContainer}>
           {posts.map((_, idx) => (
             <TouchableOpacity
@@ -101,7 +116,6 @@ export default function HomeApp() {
 }
 
 const styles = StyleSheet.create({
-  // ALTERAÇÃO: Adicionado paddingTop dinâmico para afastar o conteúdo da barra de status
   container: { 
     flex: 1, 
     backgroundColor: '#f2f2f2',
@@ -116,6 +130,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginTop: 30,
   },
+  cardWrapper: {},
   card: {
     width: 320,
     backgroundColor: '#fff',
