@@ -27,17 +27,17 @@ export const useFetch = (url, options) => {
       setData(result);
     } catch (err) {
       setError(err); // Captura erros de rede ou de processamento da resposta
-      console.error("Erro no useFetch:", err); // Para depuração
+      console.error("Erro no useFetch:", err); 
     } finally {
       setLoading(false);
     }
-  }, [url, options]); // Dependências do useCallback: url e options
+  }, [url, options]); 
 
   useEffect(() => {
     if (url) { // Só executa a busca se a URL estiver definida
       fetchData();
     }
-  }, [url, options, fetchData]); // Dependências do useEffect
+  }, [url, options, fetchData]); 
 
   return { data, loading, error };
 };

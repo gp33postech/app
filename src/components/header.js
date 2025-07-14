@@ -3,10 +3,12 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import colors from '../styles/colors';
 
-export default function Header() {
+// Mude a assinatura da função para receber a prop { title }
+export default function Header({ title }) { 
   return (
     <View style={styles.header}>
-      <Text style={styles.title}>BlogTech</Text>
+      <Text style={styles.title}>{title || 'BlogTech'}</Text>
+      
       <TouchableOpacity style={styles.button} activeOpacity={0.7}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
