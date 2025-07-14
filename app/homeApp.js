@@ -1,4 +1,5 @@
 // app/homeApp.js
+
 import React, { useState } from 'react';
 import { View, Text, Image, ActivityIndicator, StyleSheet, TouchableOpacity, Platform, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -56,6 +57,21 @@ export default function HomeApp() {
     );
   }
 
+  // ==============================================================
+  // NOVA FUNÇÃO AUXILIAR PARA TRUNCAR O TEXTO
+  // ==============================================================
+  const truncateDescription = (text, maxLength) => {
+    if (!text) return ''; // Garante que não haverá erro se o texto for null/undefined
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + '...';
+    }
+    return text;
+  };
+  // ==============================================================
+  // FIM DA NOVA FUNÇÃO
+  // ==============================================================
+
+
   return (
     <View style={styles.container}>
       <Header />
@@ -81,7 +97,17 @@ export default function HomeApp() {
                 resizeMode="cover"
               />
               <Text style={styles.title}>{post.title}</Text>
-              <Text style={styles.description}>{post.description}</Text>
+              
+              {/* ============================================================== */}
+              {/* MODIFICAÇÃO PARA USAR A FUNÇÃO DE TRUNCAR */}
+              {/* ============================================================== */}
+              <Text style={styles.description}>
+                {truncateDescription(post.description, 50)}
+              </Text>
+              {/* ============================================================== */}
+              {/* FIM DA MODIFICAÇÃO */}
+              {/* ============================================================== */}
+              
               <View style={styles.meta}>
                 <Text style={styles.author}>Autor: {post.author}</Text>
                 <Text style={styles.date}>
