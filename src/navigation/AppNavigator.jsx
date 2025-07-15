@@ -5,6 +5,8 @@ import HomeScreen from '../screens/HomeScreen';
 import AdminPostsList from '../screens/AdminPostsList';
 import CreateUserScreen from '../screens/CreateUserScreen';
 import CreatePostScreen from '../screens/CreatePostScreen';
+import AdminPage from '../screens/AdminPage';
+import PostDetails from '../screens/PostDetails';
 import Header from '../components/header';
 
 
@@ -13,16 +15,21 @@ const Stack = createStackNavigator();
 export default function AppNavigator() {
   return (
     
-        <Stack.Navigator initialRouteName="Home" screenOptions={{ header: (props) => <Header {...props} /> }}>
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{ title: 'Página Inicial' }}
-            />
+    <Stack.Navigator initialRouteName="Login" screenOptions={{ header: (props) => <Header {...props} /> }}>
       <Stack.Screen
-        name="AdminPage"
+        name="Home"
+        component={HomeScreen}
+        options={{ title: 'Página Inicial' }}
+      />
+      <Stack.Screen
+        name="PostDetails"
+        component={PostDetails}
+        options={{ title: '' }}
+      />
+      <Stack.Screen
+        name="AdminPostsList"
         component={AdminPostsList}
-        options={{ title: 'Página Administradores' }}
+        options={{ title: 'Página de Posts' }}
       />
       <Stack.Screen
         name="createUsers"
@@ -38,6 +45,11 @@ export default function AppNavigator() {
         name="Login"
         component={LoginScreen}
         options={{ title: 'Tela de Login' }}
+      />
+      <Stack.Screen
+        name="AdminPage"
+        component={AdminPage}
+        options={{ title: 'Painel Administrativo' }}
       />
     </Stack.Navigator>
   );

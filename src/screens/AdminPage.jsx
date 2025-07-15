@@ -2,38 +2,8 @@ import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import { Alert, FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-// Interfaces and type aliases like 'Post' and 'Props' have been removed.
 
-// The ': Post[]' type annotation was removed from the variable declaration.
-const DADOS_API = [
-  { id: '1', titulo: 'Explorando os Fundamentos do React Native', autor: 'Prof. Silva' },
-  { id: '2', titulo: 'Guia Completo de Estilização com StyleSheet', autor: 'Prof. Joana' },
-  { id: '3', titulo: 'Navegação Avançada com React Navigation v6', autor: 'Prof. Carlos' },
-];
 
-// Inline prop types were removed from the component's signature.
-const AdminPostRow = ({ item, onEdit, onDelete }) => (
-  <View style={styles.rowContainer}>
-    <Text style={[styles.cell, styles.titleCell]} numberOfLines={1}>{item.titulo}</Text>
-    <Text style={[styles.cell, styles.authorCell]}>{item.autor}</Text>
-    <View style={ styles.actionsCell}>
-      <TouchableOpacity style={[styles.actionButton, styles.editButton]} onPress={onEdit}>
-        <FontAwesome5 name="pen" size={12} color="white" />
-      </TouchableOpacity>
-      <TouchableOpacity style={[styles.actionButton, styles.deleteButton]} onPress={onDelete}>
-        <FontAwesome5 name="trash" size={12} color="white" />
-      </TouchableOpacity>
-    </View>
-  </View>
-);
-
-const TableHeader = () => (
-  <View style={styles.headerContainer}>
-    <Text style={[styles.headerText, styles.titleCell]}>Título</Text>
-    <Text style={[styles.headerText, styles.authorCell]}>Autor</Text>
-    <Text style={[styles.headerText, styles.actionsCell, {justifyContent: 'center'}]}>Ações</Text>
-  </View>
-);
 
 // The ': Props' type annotation was removed.
 const AdminPostsList = ({ navigation }) => {
@@ -43,7 +13,7 @@ const AdminPostsList = ({ navigation }) => {
   };
   
   const handleCreatePost = () => {
-     navigation.navigate('createPost');
+     navigation.navigate('AdminPostsList');
   };
 
   const handleCreateUsers = () =>{
@@ -72,23 +42,18 @@ const AdminPostsList = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topBar}>
-        <Text style={styles.pageTitle}>Posts</Text>
-        <View style={styles.topButtonsContainer}>          
-          <TouchableOpacity style={styles.createButton} onPress={handleCreatePost}>
-            <Text style={styles.createButtonText}>Novo Post</Text>
-            <MaterialIcons name="post-add" size={20} color="white"/>
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.pageTitle}>Admin</Text>       
       </View>
-      
-      <View style={styles.tableContainer}>
-        <FlatList
-          data={DADOS_API}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          ListHeaderComponent={<TableHeader />}
-        />
-      </View>
+      <View style={styles.topButtonsContainer}>
+        <TouchableOpacity style={styles.createButton} onPress={handleCreateUsers}>
+          <Text style={styles.createButtonText}>Usuários</Text>
+          <FontAwesome5 name="user-plus" size={15} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.createButton} onPress={handleCreatePost}>
+          <Text style={styles.createButtonText}>Posts</Text>
+          <MaterialIcons name="post-add" size={20} color="white"/>
+        </TouchableOpacity>
+      </View>      
     </SafeAreaView>
   );
 };

@@ -11,7 +11,17 @@ export default function HomeScreen({ navigation }) {
   // A função de clique continua a mesma
   const handlePostClick = (postId) => {
     console.log('Navegando para o post com ID:', postId);
-    //navigation.navigate('PostDetails', { id: postId }); 
+    navigation.navigate('PostDetails', { id: postId }); 
+  };
+  const buttonRender = () => {
+  if (true) {
+    return (
+      <TouchableOpacity style={[styles.button, styles.editButton]} onPress={()=>{
+        navigation.navigate('AdminPage')}}>
+        <Text style={styles.buttonText}>Painel Administrativo</Text>
+      </TouchableOpacity>          
+  )
+  }
   };
 
   // Os estados de loading e erro continuam iguais
@@ -22,17 +32,11 @@ export default function HomeScreen({ navigation }) {
   if (error) {
     return <View style={styles.loaderContainer}><Text style={styles.errorText}>{error.message || 'Ocorreu um erro'}</Text></View>;
   }
-
-  return (
-    <View style={styles.container}>
-
-        <TouchableOpacity style={[styles.button, styles.editButton]} onPress={()=>{
-      navigation.navigate('AdminPage')}}>
-             <Text style={styles.buttonText}>Página Admin</Text>
-      </TouchableOpacity>
-     
-
-      {/* A lógica do carrossel foi substituída pelo FlatList */}
+  
+  
+    return (
+      <View style={styles.container}>
+      {buttonRender()}
       <FlatList
         data={posts}
         // renderItem chama o PostItem para cada item na lista de posts
