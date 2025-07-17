@@ -1,28 +1,26 @@
-import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
 import { Alert, FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-// Interfaces and type aliases like 'Post' and 'Props' have been removed.
-
-// Removido mock, agora busca da API
-// Mock de posts
 const DADOS_API = [
-  { id: '1', titulo: 'Explorando os Fundamentos do React Native', autor: 'Prof. Silva' },
-  { id: '2', titulo: 'Guia Completo de Estilização com StyleSheet', autor: 'Prof. Joana' },
-  { id: '3', titulo: 'Navegação Avançada com React Navigation v6', autor: 'Prof. Carlos' },
+  { id: '1', nome: 'Gabriela', email: 'gabriela@email.com', role: 'estudante' },
+  { id: '2', nome: 'Adriano', email: 'adriano@email.com', role: 'admin' },
+  { id: '3', nome: 'Filipe', email: 'filipe@email.com', role: 'estudante' },
+  { id: '4', nome: 'Pedro', email: 'pedro@email.com', role: 'admin' },
+
 ];
 
-// Inline prop types were removed from the component's signature.
-const AdminPostRow = ({ item, onEdit, onDelete }) => (
+const AdminUserRow = ({ item, onEdit, onDelete }) => (
   <View style={styles.rowContainer}>
-    <Text style={[styles.cell, styles.titleCell]} numberOfLines={1}>{item.titulo}</Text>
-    <Text style={[styles.cell, styles.authorCell]}>{item.autor}</Text>
-    <View style={ styles.actionsCell}>
+    <Text style={[styles.cell, styles.titleCell]} numberOfLines={1}>{item.nome}</Text>
+    <Text style={[styles.cell, styles.authorCell]} numberOfLines={1}>{item.email}</Text>
+    <Text style={[styles.cell, styles.roleCell]} numberOfLines={1}>{item.role === 'admin' ? 'Professor' : 'Aluno'}</Text>
+    <View style={styles.actionsCell}>
       <TouchableOpacity style={[styles.actionButton, styles.editButton]} onPress={onEdit}>
-        <FontAwesome5 name="pen" size={12} color="white" />
+        <FontAwesome5 name="user-edit" size={12} color="white" />
       </TouchableOpacity>
       <TouchableOpacity style={[styles.actionButton, styles.deleteButton]} onPress={onDelete}>
-        <FontAwesome5 name="trash" size={12} color="white" />
+        <FontAwesome5 name="user-times" size={12} color="white" />
       </TouchableOpacity>
     </View>
   </View>
@@ -30,45 +28,36 @@ const AdminPostRow = ({ item, onEdit, onDelete }) => (
 
 const TableHeader = () => (
   <View style={styles.headerContainer}>
-    <Text style={[styles.headerText, styles.titleCell]}>Título</Text>
-    <Text style={[styles.headerText, styles.authorCell]}>Autor</Text>
+    <Text style={[styles.headerText, styles.titleCell]}>Nome</Text>
+    <Text style={[styles.headerText, styles.authorCell]}>Email</Text>
+    <Text style={[styles.headerText, styles.roleCell]}>Tipo</Text>
     <Text style={[styles.headerText, styles.actionsCell, {justifyContent: 'center'}]}>Ações</Text>
   </View>
 );
 
-// The ': Props' type annotation was removed.
-const AdminPostsList = ({ navigation }) => {
-  // Usando mock
-  // Parameter type ': string' was removed.
-  const handleEdit = (postId) => {
-    const post = DADOS_API.find((p) => p.id === postId);
-    navigation.navigate('EditPostScreen', { post });
-  };
-  
-  const handleCreatePost = () => {
-     navigation.navigate('createPost');
+const AdminUserList = ({ navigation }) => {
+  const handleEdit = (user) => {
+    navigation.navigate('EditUserScreen', { user });
   };
 
-  const handleCreateUsers = () =>{
-    navigation.navigate('createUsers')
-  }
+  const handleCreateUser = () => {
+    navigation.navigate('createUsers');
+  };
 
-  // Parameter type ': string' was removed.
-  const handleDelete = (postId) => {
+  const handleDelete = (userId) => {
     Alert.alert('Confirmar Exclusão', 'Você tem certeza?',
       [
         { text: 'Cancelar', style: 'cancel' },
-        { text: 'Excluir', onPress: () => console.log(`Deletando: ${postId}`), style: 'destructive' },
+        { text: 'Excluir', onPress: () => console.log(`Deletando usuário: ${userId}`), style: 'destructive' },
       ]
     );
   };
 
-  // The type annotation for the destructured 'item' was removed.
   const renderItem = ({ item }) => (
-    <AdminPostRow
+    <AdminUserRow
       key={item.id}
       item={item}
-      onEdit={() => handleEdit(item.id)}
+      onEdit={() => handleEdit(item)}
       onDelete={() => handleDelete(item.id)}
     />
   );
@@ -76,28 +65,34 @@ const AdminPostsList = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topBar}>
-        <Text style={styles.pageTitle}>Posts</Text>
-        <View style={styles.topButtonsContainer}>          
-          <TouchableOpacity style={styles.createButton} onPress={handleCreatePost}>
-            <Text style={styles.createButtonText}>Novo Post</Text>
-            <MaterialIcons name="post-add" size={20} color="white"/>
+        <Text style={styles.pageTitle}>Usuários</Text>
+        <View style={styles.topButtonsContainer}>
+          <TouchableOpacity style={styles.createButton} onPress={handleCreateUser}>
+            <Text style={styles.createButtonText}>Novo Usuário</Text>
+            <FontAwesome5 name="user-plus" size={15} color="white" />
           </TouchableOpacity>
         </View>
       </View>
+
       <View style={styles.tableContainer}>
         <FlatList
           data={DADOS_API}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          ListHeaderComponent={<TableHeader />}
+          ListHeaderComponent={<TableHeader key="header" />}
         />
       </View>
     </SafeAreaView>
   );
 };
 
-// The styles remain exactly the same.
 const styles = StyleSheet.create({
+  roleCell: {
+    flex: 1.5,
+    color: '#333',
+    marginLeft: 8,
+    fontSize: 14,
+  },
   container: {
     flex: 1,
     backgroundColor: '#f4f7fc',
@@ -198,4 +193,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AdminPostsList;
+export default AdminUserList;

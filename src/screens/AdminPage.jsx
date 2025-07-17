@@ -5,55 +5,30 @@ import { Alert, FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOp
 
 
 
-// The ': Props' type annotation was removed.
-const AdminPostsList = ({ navigation }) => {
-  // Parameter type ': string' was removed.
-  const handleEdit = (postId) => {
-    // navigation.navigate('EditPostScreen', { postId });
-  };
-  
-  const handleCreatePost = () => {
-     navigation.navigate('AdminPostsList');
+const AdminPage = ({ navigation }) => {
+  const handleOpenUserList = () => {
+    navigation.navigate('AdminUserList');
   };
 
-  const handleCreateUsers = () =>{
-    navigation.navigate('createUsers')
-  }
-
-  // Parameter type ': string' was removed.
-  const handleDelete = (postId) => {
-    Alert.alert('Confirmar Exclusão', 'Você tem certeza?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Excluir', onPress: () => console.log(`Deletando: ${postId}`), style: 'destructive' },
-      ]
-    );
+  const handleOpenPostsList = () => {
+    navigation.navigate('AdminPostsList');
   };
-
-  // The type annotation for the destructured 'item' was removed.
-  const renderItem = ({ item }) => (
-    <AdminPostRow
-      item={item}
-      onEdit={() => handleEdit(item.id)}
-      onDelete={() => handleDelete(item.id)}
-    />
-  );
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topBar}>
-        <Text style={styles.pageTitle}>Admin</Text>       
+        <Text style={styles.pageTitle}>Admin</Text>
       </View>
       <View style={styles.topButtonsContainer}>
-        <TouchableOpacity style={styles.createButton} onPress={handleCreateUsers}>
+        <TouchableOpacity style={styles.createButton} onPress={handleOpenUserList}>
           <Text style={styles.createButtonText}>Usuários</Text>
-          <FontAwesome5 name="user-plus" size={15} color="white" />
+          <FontAwesome5 name="user-cog" size={18} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.createButton} onPress={handleCreatePost}>
+        <TouchableOpacity style={styles.createButton} onPress={handleOpenPostsList}>
           <Text style={styles.createButtonText}>Posts</Text>
-          <MaterialIcons name="post-add" size={20} color="white"/>
+          <MaterialIcons name="post-add" size={20} color="white" />
         </TouchableOpacity>
-      </View>      
+      </View>
     </SafeAreaView>
   );
 };
@@ -160,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AdminPostsList;
+export default AdminPage;

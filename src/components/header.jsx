@@ -1,11 +1,21 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { signOut } from 'firebase/auth';
+import { auth } from '../services/firebaseConfig';
 // 1. Importe o hook 'useSafeAreaInsets'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'; 
 import colors from '../styles/colors';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function Header({ navigation, route, options }) {
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
+  };
   // 2. Chame o hook para pegar as medidas da área segura do dispositivo
   const insets = useSafeAreaInsets();
 
@@ -23,12 +33,9 @@ export default function Header({ navigation, route, options }) {
       )}
       <Text style={styles.title} numberOfLines={1}>{title}</Text>
       <View style={{ flex: 1 }} />
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={() => console.log('Criar a lógica de logout aqui')}
-      >
-        <Text style={styles.buttonText}>Sair</Text>
-      </TouchableOpacity> 
+        <TouchableOpacity style={styles.button} onPress={handleLogout}>
+          <Text style={styles.buttonText}>Sair</Text>
+        </TouchableOpacity>
     </View>
   );
 }

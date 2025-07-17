@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/LoginScreen';
@@ -8,6 +9,9 @@ import CreatePostScreen from '../screens/CreatePostScreen';
 import AdminPage from '../screens/AdminPage';
 import PostDetails from '../screens/PostDetails';
 import Header from '../components/header';
+import AdminUserList from '../screens/AdminUserList';
+import EditUserScreen from '../screens/EditUserScreen';
+import EditPostScreen from '../screens/EditPostScreen';
 
 
 const Stack = createStackNavigator();
@@ -50,6 +54,21 @@ export default function AppNavigator() {
         name="AdminPage"
         component={AdminPage}
         options={{ title: 'Painel Administrativo' }}
+      />
+      <Stack.Screen
+        name="AdminUserList"
+        component={AdminUserList}
+        options={{ title: 'Usuários' }}
+      />
+      <Stack.Screen
+        name="EditUserScreen"
+        component={EditUserScreen}
+        options={{ title: 'Edição de Usuários' }}
+      />
+      <Stack.Screen
+        name="EditPostScreen"
+        component={EditPostScreen}
+        options={{ title: 'Edição de Post' }}
       />
     </Stack.Navigator>
   );
