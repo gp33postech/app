@@ -1,20 +1,24 @@
-import React from 'react';
+
 import { View, Text, ActivityIndicator, StyleSheet, Platform, StatusBar, FlatList,TouchableOpacity } from 'react-native';
 import PostItem from '../components/PostItem';
 import useFetchPosts from '../hooks/useFetchPosts';
+import { useUserContext } from '../context/UserContext'; // Certifique-se de que o caminho está correto
 
 // Exemplo: import Header from '../components/Header';
 
 export default function HomeScreen({ navigation }) {
   const { posts, loading, error } = useFetchPosts();
 
+  const {user} = useUserContext()
+
   // A função de clique continua a mesma
   const handlePostClick = (postId) => {
     console.log('Navegando para o post com ID:', postId);
     navigation.navigate('PostDetails', { id: postId }); 
   };
+  console.log(user);
   const buttonRender = () => {
-  if (true) {
+  if (user.isAdmin === true) {
     return (
       <TouchableOpacity style={[styles.button, styles.editButton]} onPress={()=>{
         navigation.navigate('AdminPage')}}>
@@ -36,6 +40,9 @@ export default function HomeScreen({ navigation }) {
   
     return (
       <View style={styles.container}>
+        <Text style={{ fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginVertical: 10 }}>
+          {`Bem-vindo ao Tech4! ${user.name}`}
+        </Text>
       {buttonRender()}
       <FlatList
         data={posts}
