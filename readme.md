@@ -43,7 +43,7 @@ Este projeto foi desenvolvido utilizando as seguintes tecnologias e bibliotecas 
 
 1. Clone o repositório:
    ```sh
-   git clone <url-do-repositorio>
+   git clone https://github.com/gp33postech/app
 
 2. Instale as dependências:
 

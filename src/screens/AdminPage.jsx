@@ -42,10 +42,9 @@ const baseButton = {
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: '#007bff',
-  borderRadius: 25, // Bordas mais arredondadas para os botões grandes
-  height: 150,      // Altura conforme solicitado (interpretado como dp)
-  width: 300,       // Largura conforme solicitado (interpretado como dp)
-  // Adiciona sombra para um efeito visual de profundidade
+  borderRadius: 25, 
+  height: 150, 
+  width: 300, 
   elevation: 8,
   shadowColor: '#000',
   shadowOffset: { width: 0, height: 4 },
@@ -62,9 +61,7 @@ const styles = StyleSheet.create({
   topBar: {
     justifyContent: 'center',
     alignItems: 'center',
-    // --- ALTERADO AQUI ---
-    // Reduzimos o padding vertical para diminuir o espaço em torno do título.
-    paddingVertical: 20, // Era 50
+    paddingVertical: 20,
   },
   pageTitle: {
     fontSize: 34,
@@ -72,22 +69,18 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   mainButtonArea: {
-    flex: 1, // Mantém para que esta área ocupe o restante do espaço na tela
-    // --- ALTERADO AQUI ---
-    // Alinha os botões ao topo da área, em vez de centralizá-los verticalmente.
-    justifyContent: 'flex-start', // Era 'center'
-    alignItems: 'center',    // Mantém o alinhamento horizontal dos botões.
-    // --- ADICIONADO AQUI ---
-    // Adiciona um padding no topo desta área para criar um espaço razoável entre o título e os botões.
+    flex: 1, 
+    justifyContent: 'flex-start',
+    alignItems: 'center', 
     paddingTop: 30, 
   },
   userButton: {
     ...baseButton,
-    marginBottom: 30, // Mantido para o espaçamento entre os botões.
+    marginBottom: 30,
   },
   postsButton: {
     ...baseButton,
-    marginTop: -10, // Mantido para a proximidade entre os botões.
+    marginTop: -10,
   },
   buttonText: {
     color: '#fff',
