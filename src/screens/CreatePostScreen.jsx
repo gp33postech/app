@@ -1,17 +1,5 @@
 import React, { useState } from 'react';
-import {
-  SafeAreaView,
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-  Image,
-  Platform,
-  StatusBar,
-} from 'react-native';
+import {SafeAreaView,View,Text,TextInput,StyleSheet,TouchableOpacity,ScrollView,Alert,Image,StatusBar,} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome5 } from '@expo/vector-icons';
 

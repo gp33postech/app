@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import { Image } from 'react-native';
 import {
   SafeAreaView,
-  View,
   Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Alert
+  Alert,
+  Image
 } from 'react-native';
 
 const EditPostScreen = ({ route, navigation }) => {

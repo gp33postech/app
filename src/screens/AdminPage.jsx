@@ -1,6 +1,6 @@
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
-import { Alert, FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {  SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const AdminPage = ({ navigation }) => {
   const handleOpenUserList = () => {
