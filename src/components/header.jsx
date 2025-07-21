@@ -33,9 +33,11 @@ export default function Header({ navigation, route, options }) {
       )}
       <Text style={styles.title} numberOfLines={1}>{title}</Text>
       <View style={{ flex: 1 }} />
+      {route.name !== 'Login' && (
         <TouchableOpacity style={styles.button} onPress={handleLogout}>
           <Text style={styles.buttonText}>Sair</Text>
         </TouchableOpacity>
+      )}
     </View>
   );
 }
