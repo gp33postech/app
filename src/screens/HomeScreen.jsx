@@ -1,9 +1,9 @@
 
-import { View, Text, ActivityIndicator, StyleSheet, Platform, StatusBar, FlatList,TouchableOpacity } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, Platform, StatusBar, FlatList,TouchableOpacity, TextInput } from 'react-native';
 import PostItem from '../components/PostItem';
 import useFetchPosts from '../hooks/useFetchPosts';
 import { useUserContext } from '../context/UserContext'; // Certifique-se de que o caminho está correto
-
+import React, { useState } from 'react';
 // Exemplo: import Header from '../components/Header';
 
 export default function HomeScreen({ navigation }) {
@@ -11,12 +11,19 @@ export default function HomeScreen({ navigation }) {
 
   const {user} = useUserContext()
 
+  const [search, setSearch] = useState(''); // Estado para busca
+
+  // Filtra os posts conforme o texto digitado
+  const filteredPosts = posts.filter(post =>
+    post.title?.toLowerCase().includes(search.toLowerCase())
+  );
+
   // A função de clique continua a mesma
   const handlePostClick = (postId) => {
     console.log('Navegando para o post com ID:', postId);
     navigation.navigate('PostDetails', { id: postId }); 
   };
-  console.log(user);
+
   const buttonRender = () => {
   if (user.isAdmin === true) {
     return (
@@ -44,8 +51,14 @@ export default function HomeScreen({ navigation }) {
           {`Bem-vindo ao Tech4! ${user.name}`}
         </Text>
       {buttonRender()}
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Buscar postagens..."
+        value={search}
+        onChangeText={setSearch}
+      />      
       <FlatList
-        data={posts}
+        data={filteredPosts}
         // renderItem chama o PostItem para cada item na lista de posts
         renderItem={({ item }) => (
           <PostItem 
@@ -64,6 +77,17 @@ export default function HomeScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  searchInput: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 10,
+    marginHorizontal: 15,
+    marginBottom: 10,
+    marginTop: 10,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#ccc',    
+  },
   container: { 
     flex: 1, 
     backgroundColor: '#f2f2f2',
