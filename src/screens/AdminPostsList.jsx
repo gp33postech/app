@@ -1,23 +1,13 @@
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
-import { Alert, FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import useFetchPosts from '../hooks/useFetchPosts';
+import { Alert, FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 
-// Interfaces and type aliases like 'Post' and 'Props' have been removed.
-
-// Removido mock, agora busca da API
-// Mock de posts
-const DADOS_API = [
-  { id: '1', titulo: 'Explorando os Fundamentos do React Native', autor: 'Prof. Silva' },
-  { id: '2', titulo: 'Guia Completo de Estilização com StyleSheet', autor: 'Prof. Joana' },
-  { id: '3', titulo: 'Navegação Avançada com React Navigation v6', autor: 'Prof. Carlos' },
-];
-
-// Inline prop types were removed from the component's signature.
 const AdminPostRow = ({ item, onEdit, onDelete }) => (
   <View style={styles.rowContainer}>
-    <Text style={[styles.cell, styles.titleCell]} numberOfLines={1}>{item.titulo}</Text>
-    <Text style={[styles.cell, styles.authorCell]}>{item.autor}</Text>
-    <View style={ styles.actionsCell}>
+    <Text style={[styles.cell, styles.titleCell]} numberOfLines={1}>{item.title}</Text>
+    <Text style={[styles.cell, styles.authorCell]}>{item.author}</Text>
+    <View style={styles.actionsCell}>
       <TouchableOpacity style={[styles.actionButton, styles.editButton]} onPress={onEdit}>
         <FontAwesome5 name="pen" size={12} color="white" />
       </TouchableOpacity>
@@ -36,24 +26,17 @@ const TableHeader = () => (
   </View>
 );
 
-// The ': Props' type annotation was removed.
 const AdminPostsList = ({ navigation }) => {
-  // Usando mock
-  // Parameter type ': string' was removed.
+  const { posts, loading, error } = useFetchPosts();
+
   const handleEdit = (postId) => {
-    const post = DADOS_API.find((p) => p.id === postId);
-    navigation.navigate('EditPostScreen', { post });
+    navigation.navigate('EditPostScreen', { id: postId });
   };
-  
+
   const handleCreatePost = () => {
-     navigation.navigate('createPost');
+    navigation.navigate('createPost');
   };
 
-  const handleCreateUsers = () =>{
-    navigation.navigate('createUsers')
-  }
-
-  // Parameter type ': string' was removed.
   const handleDelete = (postId) => {
     Alert.alert('Confirmar Exclusão', 'Você tem certeza?',
       [
@@ -63,21 +46,28 @@ const AdminPostsList = ({ navigation }) => {
     );
   };
 
-  // The type annotation for the destructured 'item' was removed.
   const renderItem = ({ item }) => (
     <AdminPostRow
-      key={item.id}
+      key={item._id}
       item={item}
-      onEdit={() => handleEdit(item.id)}
-      onDelete={() => handleDelete(item.id)}
+      onEdit={() => handleEdit(item._id)}
+      onDelete={() => handleDelete(item._id)}
     />
   );
+
+  if (loading) {
+    return <View style={styles.loaderContainer}><ActivityIndicator size="large" color="#5c6bc0" /></View>;
+  }
+
+  if (error) {
+    return <View style={styles.loaderContainer}><Text style={styles.errorText}>{error.message || 'Ocorreu um erro'}</Text></View>;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topBar}>
         <Text style={styles.pageTitle}>Posts</Text>
-        <View style={styles.topButtonsContainer}>          
+        <View style={styles.topButtonsContainer}>
           <TouchableOpacity style={styles.createButton} onPress={handleCreatePost}>
             <Text style={styles.createButtonText}>Novo Post</Text>
             <MaterialIcons name="post-add" size={20} color="white"/>
@@ -86,23 +76,30 @@ const AdminPostsList = ({ navigation }) => {
       </View>
       <View style={styles.tableContainer}>
         <FlatList
-          data={DADOS_API}
+          data={posts}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item._id}
           ListHeaderComponent={<TableHeader />}
+          ListEmptyComponent={<Text style={styles.infoText}>Nenhuma postagem encontrada.</Text>}
         />
       </View>
     </SafeAreaView>
   );
 };
 
-// The styles remain exactly the same.
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f4f7fc',
     marginTop: StatusBar.currentHeight || 0,
   },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorText: { color: 'red', fontSize: 18, margin: 38 },
+  infoText: { fontSize: 18, margin: 48, textAlign: 'center' },
   topBar: {
     flexDirection: 'row', 
     justifyContent: 'space-between', 
