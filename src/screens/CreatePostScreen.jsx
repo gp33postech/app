@@ -14,24 +14,21 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome5 } from '@expo/vector-icons';
+import API_BASE_URL from '../config/apiConfig';
 
-// Tela de formulário para criar ou editar um post
 const CreatePostScreen = ({ navigation }) => {
-  // Estados para controlar os campos do formulário
   const [titulo, setTitulo] = useState('');
   const [conteudo, setConteudo] = useState('');
-  // O tipo genérico <string | null> foi removido do useState
   const [imagemUri, setImagemUri] = useState(null);
+  const [autor, setAutor] = useState('');
 
   const selecionarImagem = async () => {
-    // Pede permissão para acessar a galeria
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
       Alert.alert('Permissão necessária', 'Você precisa permitir o acesso à galeria para selecionar uma imagem.');
       return;
     }
 
-    // Abre o seletor de imagens
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -39,21 +36,41 @@ const CreatePostScreen = ({ navigation }) => {
       quality: 1,
     });
 
-    if (!result.canceled) {
+    if (!result.canceled && result.assets && result.assets.length > 0) {
       setImagemUri(result.assets[0].uri);
     }
   };
 
-  const handleSalvar = () => {
-    if (!titulo || !conteudo) {
-      Alert.alert('Campos Incompletos', 'Por favor, preencha o título e o conteúdo do post.');
+  const handleSalvar = async () => {
+    if (!titulo || !conteudo || !autor) {
+      Alert.alert('Campos Incompletos', 'Por favor, preencha o título, o conteúdo e o autor do post.');
       return;
     }
 
-    // enviaros dados (titulo, conteudo, imagemUri) para o backend
-    console.log({ titulo, conteudo, imagemUri });
-    Alert.alert('Post Salvo!', 'Seu post foi salvo com sucesso (simulação).');
-    navigation.goBack();
+    const dataAtual = new Date().toISOString().split('T')[0]; // yyyy-mm-dd
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: titulo,
+          description: conteudo,
+          image: imagemUri,
+          author: autor,
+          date: dataAtual,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Erro ao criar post');
+
+      Alert.alert('Post Salvo!', 'Seu post foi salvo com sucesso.');
+      navigation.goBack();
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível salvar o post.');
+    }
   };
 
   const handleCancelar = () => {
@@ -72,6 +89,15 @@ const CreatePostScreen = ({ navigation }) => {
           value={titulo}
           onChangeText={setTitulo}
           placeholder="Título do Post"
+        />
+
+        {/* Campo de Autor */}
+        <Text style={styles.label}>Autor</Text>
+        <TextInput
+          style={styles.input}
+          value={autor}
+          onChangeText={setAutor}
+          placeholder="Nome do autor"
         />
 
         {/* Campo de Conteúdo */}
@@ -116,7 +142,6 @@ const CreatePostScreen = ({ navigation }) => {
   );
 };
 
-// Estilos para a tela
 const styles = StyleSheet.create({
   container: {
     flex: 1,
