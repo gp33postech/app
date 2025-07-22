@@ -3,13 +3,13 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
-import AdminPostsList from '../screens/AdminPostsList';
+
 import CreateUserScreen from '../screens/CreateUserScreen';
 import CreatePostScreen from '../screens/CreatePostScreen';
 import AdminPage from '../screens/AdminPage';
 import PostDetails from '../screens/PostDetails';
 import Header from '../components/header';
-import AdminUserList from '../screens/AdminUserList';
+
 import EditUserScreen from '../screens/EditUserScreen';
 import EditPostScreen from '../screens/EditPostScreen';
 
@@ -31,11 +31,6 @@ export default function AppNavigator() {
         options={{ title: '' }}
       />
       <Stack.Screen
-        name="AdminPostsList"
-        component={AdminPostsList}
-        options={{ title: 'Página de Posts' }}
-      />
-      <Stack.Screen
         name="createUsers"
         component={CreateUserScreen}
         options={{ title: 'Criar Usuários' }}
@@ -54,11 +49,6 @@ export default function AppNavigator() {
         name="AdminPage"
         component={AdminPage}
         options={{ title: 'Painel Administrativo' }}
-      />
-      <Stack.Screen
-        name="AdminUserList"
-        component={AdminUserList}
-        options={{ title: 'Usuários' }}
       />
       <Stack.Screen
         name="EditUserScreen"

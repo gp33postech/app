@@ -1,12 +1,12 @@
 import { FontAwesome5 } from '@expo/vector-icons';
-import { useState, useEffect, useCallback } from 'react'; // <-- CORREÇÃO: Importar useEffect e useCallback
+import { useState, useEffect, useCallback } from 'react'; 
 import { Alert, FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { functions } from '../services/firebaseConfig';
 import { httpsCallable } from 'firebase/functions';
 import { Picker } from '@react-native-picker/picker';
 import { useFocusEffect } from '@react-navigation/native';
 
-// Componentes AdminUserRow e TableHeader (sem alterações)
+
 const AdminUserRow = ({ item, onEdit, onDelete }) => (
   <View style={styles.rowContainer}>
     <Text style={[styles.cell, styles.titleCell]} numberOfLines={1}>{item.displayName}</Text>
@@ -33,7 +33,7 @@ const TableHeader = () => (
 );
 
 
-const AdminUserList = ({ navigation }) => {
+export const AdminUserList = ({ navigation }) => {
   const [selectedTable, setSelectedTable] = useState('');
   const [professores, setProfessores] = useState([]); 
   const [alunos, setAlunos] = useState([]);       
@@ -94,14 +94,15 @@ const AdminUserList = ({ navigation }) => {
   };
 
   const handleDelete = (userId) => {
-    
+    console.log(userId);
     Alert.alert('Confirmar Exclusão', 'Você tem certeza?',
       [
         { text: 'Cancelar', style: 'cancel' },
         { text: 'Excluir', onPress: async () => {
           try {
-            
+            setLoading(true);
             await deleteUserCallable({uid: userId});
+            setLoading(false);
             Alert.alert("Sucesso", "Usuário excluído com sucesso.");
             
             fetchUsers(); 
@@ -109,7 +110,10 @@ const AdminUserList = ({ navigation }) => {
             console.error("Erro ao excluir usuário:", error);
             Alert.alert("Erro", "Não foi possível excluir o usuário.");
           }
-        }, style: 'destructive' },
+          
+        }
+        
+        , style: 'destructive' },
       ]
     );
   };
@@ -119,7 +123,7 @@ const AdminUserList = ({ navigation }) => {
       key={item.uid}
       item={item}
       onEdit={() => handleEdit(item)}
-      onDelete={() => {handleDelete(item.uid)}}
+      onDelete={() => {handleDelete(item.uid); console.log(item.uid)}}
     />
   );
 
@@ -164,7 +168,7 @@ const AdminUserList = ({ navigation }) => {
   );
 };
 
-// Seus estilos aqui (sem alterações)
+
 const styles = StyleSheet.create({
   roleCell: {
     flex: 1.5,
@@ -271,5 +275,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#dc3545',
   },
 });
-
-export default AdminUserList;

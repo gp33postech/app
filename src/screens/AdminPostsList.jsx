@@ -13,7 +13,7 @@ const DADOS_API = [
 ];
 
 // Inline prop types were removed from the component's signature.
-const AdminPostRow = ({ item, onEdit, onDelete }) => (
+export const AdminPostRow = ({ item, onEdit, onDelete }) => (
   <View style={styles.rowContainer}>
     <Text style={[styles.cell, styles.titleCell]} numberOfLines={1}>{item.titulo}</Text>
     <Text style={[styles.cell, styles.authorCell]}>{item.autor}</Text>
@@ -37,7 +37,7 @@ const TableHeader = () => (
 );
 
 // The ': Props' type annotation was removed.
-const AdminPostsList = ({ navigation }) => {
+export const AdminPostsList = ({ navigation }) => {
   // Usando mock
   // Parameter type ': string' was removed.
   const handleEdit = (postId) => {
@@ -49,9 +49,6 @@ const AdminPostsList = ({ navigation }) => {
      navigation.navigate('createPost');
   };
 
-  const handleCreateUsers = () =>{
-    navigation.navigate('createUsers')
-  }
 
   // Parameter type ': string' was removed.
   const handleDelete = (postId) => {
