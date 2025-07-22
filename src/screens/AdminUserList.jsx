@@ -94,7 +94,7 @@ const AdminUserList = ({ navigation }) => {
   };
 
   const handleDelete = (userId) => {
-    console.log(userId);
+    
     Alert.alert('Confirmar Exclusão', 'Você tem certeza?',
       [
         { text: 'Cancelar', style: 'cancel' },
@@ -119,7 +119,7 @@ const AdminUserList = ({ navigation }) => {
       key={item.uid}
       item={item}
       onEdit={() => handleEdit(item)}
-      onDelete={() => {handleDelete(item.uid); console.log(item.uid)}}
+      onDelete={() => {handleDelete(item.uid)}}
     />
   );
 
