@@ -4,7 +4,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import {
   Image,
   SafeAreaView,
-  View,
   Text,
   TextInput,
   StyleSheet,

@@ -1,17 +1,38 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar } from 'react-native';
+import { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar,Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { httpsCallable } from 'firebase/functions';
+import { functions } from '../services/firebaseConfig';
+
 
 const EditUserScreen = ({ route, navigation }) => {
+
+  
   // Recebe os dados do usuário 
   const { user } = route.params || {};
-  const [nome, setNome] = useState(user?.nome || '');
-  const [email, setEmail] = useState(user?.email || '');
+  
+  const [nome, setNome] = useState(user?.displayName || '');
+  const email = user?.email;
   const [role, setRole] = useState(user?.role || 'estudante');
 
-  const handleSave = () => {
-    console.log('Usuário editado:', { nome, email });
-    navigation.goBack();
+  const updateUserCallable = httpsCallable(functions, 'updateUser');
+
+  const handleSave = async() => {
+   
+    try {
+      await updateUserCallable({
+        uid: user.uid,
+        displayName: nome,
+        role: role,
+      });
+      Alert.alert("Sucesso", "Usuário atualizado com sucesso!");
+      navigation.goBack(); 
+    } catch (error) {
+      console.error("Erro ao atualizar usuário:", error);
+      Alert.alert("Erro", "Não foi possível atualizar o usuário.");
+    }
+  
+    
   };
 
   return (
@@ -24,13 +45,9 @@ const EditUserScreen = ({ route, navigation }) => {
           value={nome}
           onChangeText={setNome}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-        />
+        <View style={styles.input}>
+        <Text style={styles.emailText}>{email}</Text>
+        </View>
         <Text style={styles.label}>Função (Role)</Text>
         <View style={styles.pickerContainer}>
           <Picker
@@ -109,6 +126,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
+  emailText: {
+    fontSize: 16,
+    color: '#6c757d', 
+},
 });
 
 export default EditUserScreen;

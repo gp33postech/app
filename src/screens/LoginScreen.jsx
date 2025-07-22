@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Button, StyleSheet, Text, View, TextInput } from 'react-native';
 import { auth } from '../services/firebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useUserContext } from '../context/UserContext';
+
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const {user} = useUserContext()
+  
   
 
 
@@ -21,8 +21,6 @@ export default function LoginScreen({ navigation }) {
     }
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      user.email = email; 
-      user.isAdmin = true; 
       navigation.navigate('Home');
     } catch (error) {
       setError("Email ou senha inválidos.");

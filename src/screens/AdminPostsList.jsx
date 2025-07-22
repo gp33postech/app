@@ -28,15 +28,11 @@ const TableHeader = () => (
   </View>
 );
 
-const AdminPostsList = ({ navigation }) => {
-  const { posts, loading, error, refetch } = useFetchPosts();
-
-   useFocusEffect(
-    useCallback(() => {
-      refetch();
-    }, [refetch])
-  );
-
+// The ': Props' type annotation was removed.
+export const AdminPostsList = ({ navigation }) => {
+  const { posts, loading, error, refetch } = useFetchPosts(API_BASE_URL + '/posts');
+  // Usando mock
+  // Parameter type ': string' was removed.
   const handleEdit = (postId) => {
     navigation.navigate('EditPostScreen', { id: postId });
   };
@@ -45,34 +41,15 @@ const AdminPostsList = ({ navigation }) => {
     navigation.navigate('createPost');
   };
 
-const deletePost = async (postId) => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/posts/${postId}`, {
-      method: 'DELETE',
-    });
-    console.log('Status da resposta:', response.status);
-    if (response.status === 200 || response.status === 204) {
-      Alert.alert('Sucesso', 'Post deletado com sucesso!');
-      refetch();
-    } else {
-      const text = await response.text();
-      throw new Error(text || 'Erro ao deletar o post');
-    }
-  } catch (error) {
-    Alert.alert('Erro', 'Não foi possível deletar o post.');
-    console.log('Erro:', error);
-  }
-};
-
- const handleDelete = (postId) => {
-    Alert.alert('Confirmar Exclusão', 'Você tem certeza?', [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Excluir',
-        style: 'destructive',
-        onPress: () => deletePost(postId),
-      },
-    ]);
+ 
+  // Parameter type ': string' was removed.
+  const handleDelete = (postId) => {
+    Alert.alert('Confirmar Exclusão', 'Você tem certeza?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Excluir', onPress: () => console.log(`Deletando: ${postId}`), style: 'destructive' },
+      ]
+    );
   };
   const renderItem = ({ item }) => (
     <AdminPostRow
@@ -224,5 +201,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#dc3545',
   },
 });
-
-export default AdminPostsList;
