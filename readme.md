@@ -73,7 +73,7 @@ app/
 │   ├── screens/            # Telas do app (Login, Home, Admin, CRUD)
 │   ├── services/           # Integração com Firebase
 │   ├── styles/             # Estilos customizados
-│   └── assets/             # Imagens e recursos estáticos
+│── assets/                 # Imagens e recursos estáticos
 ├── app.json                # Configuração do Expo
 ├── app.jsx                 # Ponto de entrada do app
 ├── index.js                # Inicialização do projeto
@@ -89,11 +89,16 @@ app/
 - @react-native-picker/picker: Picker para seleção de opções
 - @react-native-async-storage/async-storage: Persistência local
 - @expo/vector-icons: Ícones
+- @react-navigation/material-top-tabs: Navagação entre as páginas Aluno ou Professor
+- @react-navigation/stack: Navagação entre as páginas
+- expo-image-picker : para selecionar imagem da galeria
+
 
 ## Relatos e desafios no desenvolvimento
 Alguns dos desafios encontrados pela equipe durante o desenvolvimento foram a configuração do ambiente para funcionamento dos emuladores, emuladores muito pesados, quebra do build conforme evolução do projeto dificultando a validação e integração de todo o conteúdo teórico com a abordagem prática exigida no desafio em grupo.
 
 ## Equipe de Desenvolvimento
+Grupo 14
 - ADRIANO BATISTA DE ARAÚJO - RM: 360317
 - FILIPE ARAÚJO DA COSTA - RM: 360594
 - GABRIELA MIDORI AFUSO - RM: 360009
