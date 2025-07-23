@@ -28,11 +28,15 @@ const TableHeader = () => (
   </View>
 );
 
-// The ': Props' type annotation was removed.
 export const AdminPostsList = ({ navigation }) => {
   const { posts, loading, error, refetch } = useFetchPosts(API_BASE_URL + '/posts');
-  // Usando mock
-  // Parameter type ': string' was removed.
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch])
+  );
+ 
   const handleEdit = (postId) => {
     navigation.navigate('EditPostScreen', { id: postId });
   };
@@ -44,13 +48,31 @@ export const AdminPostsList = ({ navigation }) => {
  
   // Parameter type ': string' was removed.
   const handleDelete = (postId) => {
-    Alert.alert('Confirmar Exclusão', 'Você tem certeza?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Excluir', onPress: () => console.log(`Deletando: ${postId}`), style: 'destructive' },
-      ]
-    );
-  };
+  Alert.alert('Confirmar Exclusão', 'Você tem certeza?',
+    [
+      { text: 'Cancelar', style: 'cancel' },
+      {
+        text: 'Excluir',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            const response = await fetch(`${API_BASE_URL}/posts/${postId}`, {
+              method: 'DELETE',
+            });
+            if (response.status === 200 || response.status === 204) {
+              Alert.alert('Sucesso', 'Post deletado com sucesso!');
+              refetch();
+            } else {
+              Alert.alert('Erro', 'Não foi possível deletar o post.');
+            }
+          } catch (error) {
+            Alert.alert('Erro', 'Não foi possível deletar o post.');
+          }
+        }
+      },
+    ]
+  );
+};
   const renderItem = ({ item }) => (
     <AdminPostRow
       key={item._id}

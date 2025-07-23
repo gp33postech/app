@@ -3,6 +3,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome5 } from '@expo/vector-icons';
 import {
   Image,
+  View,
   SafeAreaView,
   Text,
   TextInput,

@@ -3,15 +3,22 @@ import { View, Text, ActivityIndicator, StyleSheet, Platform, StatusBar, FlatLis
 import PostItem from '../components/PostItem';
 import useFetchPosts from '../hooks/useFetchPosts';
 import { useAuth } from '../context/UserContext';
-import React, { useState } from 'react';
-// Exemplo: import Header from '../components/Header';
+import React, { useState,useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function HomeScreen({ navigation }) {
-  const { posts, loading, error } = useFetchPosts();
+  const { posts, loading, error, refetch } = useFetchPosts();
 
   const { user } = useAuth();
 
   const [search, setSearch] = useState(''); // Estado para busca
+
+  //Atualizar a pagina quando o usuário voltar
+    useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch])
+  );
 
   // Filtra os posts conforme o texto digitado
   const filteredPosts = posts.filter(post =>
