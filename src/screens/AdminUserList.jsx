@@ -47,7 +47,7 @@ export const AdminUserList = ({ navigation }) => {
     setError(null);
     try {
       const listUsersFunction = httpsCallable(functions, 'listUsers');
-      console.log("Chamando a função 'listUsers'...");
+      
       const result = await listUsersFunction();
       
       const data = result.data;
@@ -94,7 +94,7 @@ export const AdminUserList = ({ navigation }) => {
   };
 
   const handleDelete = (userId) => {
-    console.log(userId);
+  
     Alert.alert('Confirmar Exclusão', 'Você tem certeza?',
       [
         { text: 'Cancelar', style: 'cancel' },
@@ -123,7 +123,7 @@ export const AdminUserList = ({ navigation }) => {
       key={item.uid}
       item={item}
       onEdit={() => handleEdit(item)}
-      onDelete={() => {handleDelete(item.uid); console.log(item.uid)}}
+      onDelete={() => {handleDelete(item.uid);}}
     />
   );
 

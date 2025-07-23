@@ -27,10 +27,9 @@ export default function HomeScreen({ navigation }) {
 
   // A função de clique continua a mesma
   const handlePostClick = (postId) => {
-    console.log('Navegando para o post com ID:', postId);
+ 
     navigation.navigate('PostDetails', { id: postId }); 
   };
-  console.log(user);
   const buttonRender = () => {
   if (user?.role === 'admin') {
     return (
